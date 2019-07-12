@@ -1,6 +1,6 @@
 const router = require('express').Router();
 const yelpController = require('../../controllers/yelpController');
 
-router.route('/:location').get(yelpController.getResults);
+router.route('/').post(yelpController.getResults);
 
 module.exports = router;
