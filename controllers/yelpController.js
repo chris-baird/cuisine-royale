@@ -3,16 +3,9 @@ const axios = require('axios');
 // Yelp Controller
 module.exports = {
   getResults: (req, res) => {
-    const { location, radius, term } = req.body;
+    const { latitude, longitude, radius, term } = req.body;
 
-    const query = `https://api.yelp.com/v3/businesses/search?location=${location.replace(
-      ' ',
-      '%20'
-    )}&radius=${radius}&categories=restaurants,all&term=${term}`;
-
-    console.log(query);
-
-    // res.send('done');
+    const query = `https://api.yelp.com/v3/businesses/search?longitude=${longitude}&latitude=${latitude}&radius=${radius}&categories=restaurants,all&term=${term}&open_now=true`;
 
     axios({
       method: 'GET',
@@ -22,25 +15,19 @@ module.exports = {
       }
     })
       .then(results => {
-        console.log(results.data);
+        const yelpData = results.data.businesses;
 
-        function Places(index) {
-          this.imageUrl = results.data.businesses[index].image_url;
-          this.name = results.data.businesses[index].name;
-          this.phone = results.data.businesses[index].phone;
-          this.price = results.data.businesses[index].price;
-          this.rating = results.data.businesses[index].rating;
-          this.location =
-            results.data.businesses[index].location.display_address;
+        function Places(item) {
+          this.imageUrl = item.image_url || null;
+          this.name = item.name || null;
+          this.phone = item.phone || null;
+          this.price = item.price || null;
+          this.rating = item.rating || null;
+          this.location = item.location || null;
         }
 
-        const formattedData = [];
+        const formattedData = yelpData.map(item => new Places(item));
 
-        results.data.businesses.forEach((item, index) =>
-          formattedData.push(new Places(index))
-        );
-
-        const idk = new Places(0);
         res.send(formattedData);
       })
       .catch(err => console.log(err));
