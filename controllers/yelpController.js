@@ -5,7 +5,7 @@ module.exports = {
   getResults: (req, res) => {
     const { latitude, longitude, radius, term } = req.body;
 
-    const query = `https://api.yelp.com/v3/businesses/search?longitude=${longitude}&latitude=${latitude}&radius=${radius}&categories=restaurants,all&term=${term}&open_now=true`;
+    const query = `https://api.yelp.com/v3/businesses/search?longitude=${longitude}&latitude=${latitude}&radius=${radius}&categories=restaurants,all&term=${term}&open_now=true&limit=50`;
 
     axios({
       method: 'GET',
