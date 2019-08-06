@@ -1,6 +1,5 @@
 const axios = require('axios');
 
-// Yelp Controller
 module.exports = {
   getResults: (req, res) => {
     const { latitude, longitude, radius, term } = req.body;
