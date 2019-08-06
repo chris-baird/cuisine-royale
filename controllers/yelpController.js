@@ -18,6 +18,7 @@ module.exports = {
         const yelpData = results.data.businesses;
 
         function Places(item) {
+          this.id = item.id || null;
           this.imageUrl = item.image_url || null;
           this.name = item.name || null;
           this.phone = item.phone || null;
