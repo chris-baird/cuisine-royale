@@ -11,34 +11,17 @@ class SettingsForm extends React.Component {
     this.state = {
       radius: 1
     };
-    this.handleGetLocation = this.handleGetLocation.bind(this);
     this.handleFormSubmit = this.handleFormSubmit.bind(this);
     this.handleConvertRadius = this.handleConvertRadius.bind(this);
-  }
-
-  handleGetLocation(setFieldValue, handleSubmit) {
-    navigator.geolocation.getCurrentPosition(position => {
-      setFieldValue(
-        'geoLocation',
-        `${position.coords.longitude},${position.coords.latitude}`,
-        false
-      );
-      setFieldValue(
-        'location',
-        `${position.coords.longitude},${position.coords.latitude}`
-      );
-      handleSubmit();
-    });
   }
 
   handleFormSubmit(values) {
     console.log('form submitted');
     console.log(Math.floor(this.handleConvertRadius(this.state.radius)));
-    console.log(values.geoLocation ? values.geoLocation : values.location);
 
     axios
       .post('/api/yelp/', {
-        location: values.geoLocation ? values.geoLocation : values.location,
+        location: values.location,
         radius: this.handleConvertRadius(this.state.radius)
       })
       .then(res => console.log(res));
@@ -54,11 +37,10 @@ class SettingsForm extends React.Component {
         validationSchema={settingsFormSchema}
         onSubmit={values => this.handleFormSubmit(values)}
         initialValues={{
-          location: '',
-          geoLocation: ''
+          location: ''
         }}
       >
-        {({ handleSubmit, handleChange, values, errors, setFieldValue }) => (
+        {({ handleSubmit, handleChange, values, errors }) => (
           <Form noValidate onSubmit={handleSubmit}>
             <Form.Group>
               <Form.Label>Search Location</Form.Label>
@@ -109,14 +91,6 @@ class SettingsForm extends React.Component {
 
             <Button type="submit" variant="primary">
               Use Search Location
-            </Button>
-            <Button
-              variant="outline-secondary"
-              onClick={() =>
-                this.handleGetLocation(setFieldValue, handleSubmit)
-              }
-            >
-              Use GPS Location
             </Button>
             {/* Temp code for displaying location in mobile testing */}
             <p>{values.location}</p>
