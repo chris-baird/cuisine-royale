@@ -7,7 +7,7 @@ class SettingsForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      x: 1,
+      radius: 1,
       cuisine: '',
       location: '',
       longitude: '',
@@ -41,13 +41,13 @@ class SettingsForm extends React.Component {
 
   handleFormSubmit() {
     console.log('form submitted');
-    console.log(this.state.longitude, this.state.latitude, this.state.x);
+    console.log(this.state.longitude, this.state.latitude, this.state.radius);
 
     axios
       .post('/api/yelp/', {
         longitude: this.state.longitude,
         latitude: this.state.latitude,
-        radius: this.handleConvertRadius(this.state.x)
+        radius: this.handleConvertRadius(this.state.radius)
       })
       .then(res => console.log(res));
   }
@@ -105,7 +105,9 @@ class SettingsForm extends React.Component {
             </InputGroup>
           </Form.Group>
           <Form.Group>
-            <Form.Label>{'Search Radius?: Miles ' + this.state.x}</Form.Label>
+            <Form.Label>
+              {'Search Radius?: Miles ' + this.state.radius}
+            </Form.Label>
             <Slider
               style={{ display: 'block', width: '100%' }}
               styles={{
@@ -125,9 +127,9 @@ class SettingsForm extends React.Component {
               xstep={0.5}
               xmin={0.5}
               xmax={5}
-              x={this.state.x}
+              x={this.state.radius}
               onChange={({ x }) =>
-                this.setState({ x: parseFloat(x.toFixed(2)) })
+                this.setState({ radius: parseFloat(x.toFixed(2)) })
               }
             />
           </Form.Group>
