@@ -118,6 +118,8 @@ class SettingsForm extends React.Component {
             >
               Use GPS Location
             </Button>
+            {/* Temp code for displaying location in mobile testing */}
+            <p>{values.location}</p>
           </Form>
         )}
       </Formik>
