@@ -2,22 +2,14 @@ import React from 'react';
 import { Form, Button, FormControl, InputGroup } from 'react-bootstrap';
 import Slider from 'react-input-slider';
 import { Formik } from 'formik';
-import * as yup from 'yup';
+import settingsFormSchema from './settingsForm.schema';
 import axios from 'axios';
 
-const schema = yup.object({
-  location: yup.string().required(),
-  geoLocation: yup.string()
-});
 class SettingsForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      radius: 1,
-      cuisine: '',
-      location: '',
-      longitude: '',
-      latitude: ''
+      radius: 1
     };
     this.handleGetLocation = this.handleGetLocation.bind(this);
     this.handleFormSubmit = this.handleFormSubmit.bind(this);
@@ -40,9 +32,8 @@ class SettingsForm extends React.Component {
   }
 
   handleFormSubmit(values) {
-    console.log(values);
-    console.log(Math.floor(this.handleConvertRadius(this.state.radius)));
     console.log('form submitted');
+    console.log(Math.floor(this.handleConvertRadius(this.state.radius)));
     console.log(values.geoLocation ? values.geoLocation : values.location);
 
     axios
@@ -60,41 +51,27 @@ class SettingsForm extends React.Component {
   render() {
     return (
       <Formik
-        validationSchema={schema}
+        validationSchema={settingsFormSchema}
         onSubmit={values => this.handleFormSubmit(values)}
         initialValues={{
-          location: ''
+          location: '',
+          geoLocation: ''
         }}
       >
-        {({
-          handleSubmit,
-          handleChange,
-          values,
-          errors,
-          setFieldValue,
-          setValues
-        }) => (
+        {({ handleSubmit, handleChange, values, errors, setFieldValue }) => (
           <Form noValidate onSubmit={handleSubmit}>
             <Form.Group>
-              <Form.Label>Zip Code</Form.Label>
+              <Form.Label>Search Location</Form.Label>
               <InputGroup className="mb-3">
                 <FormControl
-                  type="text"
                   name="location"
-                  onChange={handleChange}
+                  type="text"
                   value={values.location}
-                  placeholder="...92705"
+                  placeholder="address, city, state or zip"
                   aria-label="Location"
+                  onChange={handleChange}
                   isInvalid={!!errors.location}
                 />
-                <InputGroup.Append>
-                  {/* <Button
-                    variant="outline-secondary"
-                    onClick={() => this.handleGetLocation(setFieldValue)}
-                  >
-                    Get Location
-                  </Button> */}
-                </InputGroup.Append>
                 <Form.Control.Feedback type="invalid">
                   {errors.location}
                 </Form.Control.Feedback>
@@ -102,7 +79,7 @@ class SettingsForm extends React.Component {
             </Form.Group>
             <Form.Group>
               <Form.Label>
-                {'Search Radius?: Miles ' + this.state.radius}
+                {`Search Disatance?: ${this.state.radius} Miles`}
               </Form.Label>
               <Slider
                 style={{ display: 'block', width: '100%' }}
@@ -131,7 +108,7 @@ class SettingsForm extends React.Component {
             </Form.Group>
 
             <Button type="submit" variant="primary">
-              Use Zip Code
+              Use Search Location
             </Button>
             <Button
               variant="outline-secondary"
@@ -139,7 +116,7 @@ class SettingsForm extends React.Component {
                 this.handleGetLocation(setFieldValue, handleSubmit)
               }
             >
-              Use My Location
+              Use GPS Location
             </Button>
           </Form>
         )}
