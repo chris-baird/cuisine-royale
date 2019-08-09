@@ -17,7 +17,7 @@ class SettingsForm extends React.Component {
 
   handleFormSubmit(values) {
     console.log('form submitted');
-    console.log(Math.floor(this.handleConvertRadius(this.state.radius)));
+    console.log(this.handleConvertRadius(this.state.radius));
 
     axios
       .post('/api/yelp/', {
@@ -28,7 +28,7 @@ class SettingsForm extends React.Component {
   }
 
   handleConvertRadius(miles) {
-    return miles * 1609.344;
+    return Math.floor(miles * 1609.344);
   }
 
   render() {
