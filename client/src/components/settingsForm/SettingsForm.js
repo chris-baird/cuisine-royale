@@ -17,9 +17,6 @@ class SettingsForm extends React.Component {
   }
 
   handleFormSubmit(values) {
-    console.log('form submitted');
-    console.log(this.handleConvertRadius(this.state.radius));
-    console.log(this.props);
     axios
       .post('/api/yelp/', {
         location: values.location,
@@ -96,8 +93,6 @@ class SettingsForm extends React.Component {
             <Button type="submit" variant="primary">
               Use Search Location
             </Button>
-            {/* Temp code for displaying location in mobile testing */}
-            <p>{values.location}</p>
           </Form>
         )}
       </Formik>

@@ -6,7 +6,7 @@ function DraftResultsContainer(props) {
   return (
     <Row>
       {props.apiData.map(item => (
-        <DraftResultsWrapper item={item} />
+        <DraftResultsWrapper item={item} key={item.id} />
       ))}
     </Row>
   );

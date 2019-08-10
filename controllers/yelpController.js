@@ -15,6 +15,7 @@ module.exports = {
     })
       .then(results => {
         const yelpData = results.data.businesses;
+        console.log(yelpData);
 
         function Places(item) {
           this.id = item.id || null;
