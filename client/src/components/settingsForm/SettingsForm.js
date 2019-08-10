@@ -1,4 +1,5 @@
 import React from 'react';
+import { withRouter } from 'react-router-dom';
 import { Form, Button, FormControl, InputGroup } from 'react-bootstrap';
 import Slider from 'react-input-slider';
 import { Formik } from 'formik';
@@ -16,15 +17,15 @@ class SettingsForm extends React.Component {
   }
 
   handleFormSubmit(values) {
-    console.log('form submitted');
-    console.log(this.handleConvertRadius(this.state.radius));
-
     axios
       .post('/api/yelp/', {
         location: values.location,
         radius: this.handleConvertRadius(this.state.radius)
       })
-      .then(res => console.log(res));
+      .then(res => {
+        this.props.handleAddApiData(res.data);
+        this.props.history.push('/draft');
+      });
   }
 
   handleConvertRadius(miles) {
@@ -92,8 +93,6 @@ class SettingsForm extends React.Component {
             <Button type="submit" variant="primary">
               Use Search Location
             </Button>
-            {/* Temp code for displaying location in mobile testing */}
-            <p>{values.location}</p>
           </Form>
         )}
       </Formik>
@@ -101,4 +100,4 @@ class SettingsForm extends React.Component {
   }
 }
 
-export default SettingsForm;
+export default withRouter(SettingsForm);
