@@ -1,7 +1,7 @@
 import React from 'react';
 import DraftResultsWrapper from '../draftItemWrapper/DraftItemWrapper';
 import { Row } from 'react-bootstrap';
-// import { lodash as _ } from 'lodash';
+import DraftPickDisplay from '../draftPickDisplay/DraftPickDisplay';
 const _ = require('lodash');
 
 class DraftResultsContainer extends React.Component {
@@ -11,6 +11,12 @@ class DraftResultsContainer extends React.Component {
       drafted: []
     };
     this.handleDraftPick = this.handleDraftPick.bind(this);
+    this.handleResetDraft = this.handleResetDraft.bind(this);
+  }
+
+  handleResetDraft() {
+    const newDraft = [];
+    this.setState({ drafted: newDraft });
   }
 
   handleDraftPick(pick) {
@@ -23,9 +29,11 @@ class DraftResultsContainer extends React.Component {
 
       this.setState({ drafted: newDraft });
     } else {
-      draftCopy.push(pick);
+      if (draftCopy.length < 6) {
+        draftCopy.push(pick);
 
-      this.setState({ drafted: draftCopy });
+        this.setState({ drafted: draftCopy });
+      }
     }
   }
 
@@ -34,16 +42,22 @@ class DraftResultsContainer extends React.Component {
   }
   render() {
     return (
-      <Row>
-        {this.props.apiData.map(item => (
-          <DraftResultsWrapper
-            item={item}
-            key={item.id}
-            handleDraftPick={this.handleDraftPick}
-            selected={_.includes(this.state.drafted, item)}
-          />
-        ))}
-      </Row>
+      <div>
+        <DraftPickDisplay
+          count={this.state.drafted.length}
+          resetDraft={this.handleResetDraft}
+        />
+        <Row>
+          {this.props.apiData.map(item => (
+            <DraftResultsWrapper
+              item={item}
+              key={item.id}
+              handleDraftPick={this.handleDraftPick}
+              selected={_.includes(this.state.drafted, item)}
+            />
+          ))}
+        </Row>
+      </div>
     );
   }
 }
