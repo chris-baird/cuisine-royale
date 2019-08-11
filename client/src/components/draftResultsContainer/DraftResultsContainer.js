@@ -8,7 +8,8 @@ class DraftResultsContainer extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      drafted: []
+      drafted: [],
+      picksRemaining: 6
     };
     this.handleDraftPick = this.handleDraftPick.bind(this);
     this.handleResetDraft = this.handleResetDraft.bind(this);
@@ -16,7 +17,7 @@ class DraftResultsContainer extends React.Component {
 
   handleResetDraft() {
     const newDraft = [];
-    this.setState({ drafted: newDraft });
+    this.setState({ drafted: newDraft, picksRemaining: 6 });
   }
 
   handleDraftPick(pick) {
@@ -27,12 +28,18 @@ class DraftResultsContainer extends React.Component {
     if (pickIndex !== -1) {
       const newDraft = _.filter(draftCopy, item => item.id !== pick.id);
 
-      this.setState({ drafted: newDraft });
+      this.setState({
+        drafted: newDraft,
+        picksRemaining: this.state.picksRemaining + 1
+      });
     } else {
       if (draftCopy.length < 6) {
         draftCopy.push(pick);
 
-        this.setState({ drafted: draftCopy });
+        this.setState({
+          drafted: draftCopy,
+          picksRemaining: this.state.picksRemaining - 1
+        });
       }
     }
   }
@@ -44,7 +51,7 @@ class DraftResultsContainer extends React.Component {
     return (
       <div>
         <DraftPickDisplay
-          count={this.state.drafted.length}
+          count={this.state.picksRemaining}
           drafts={this.state.drafted}
           handleDraftPick={this.handleDraftPick}
           resetDraft={this.handleResetDraft}
