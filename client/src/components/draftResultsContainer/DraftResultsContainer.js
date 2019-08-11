@@ -45,6 +45,8 @@ class DraftResultsContainer extends React.Component {
       <div>
         <DraftPickDisplay
           count={this.state.drafted.length}
+          drafts={this.state.drafted}
+          handleDraftPick={this.handleDraftPick}
           resetDraft={this.handleResetDraft}
         />
         <Row>
