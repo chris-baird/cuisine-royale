@@ -31,14 +31,6 @@ function DraftPickDiplay(props) {
           {props.drafts.map(item => (
             <Dropdown.Item href="#/action-1" key={item.id}>
               {item.name}
-              <span>X</span>
-              {/* <Button
-                style={{ float: 'right' }}
-                variant="danger"
-                onClick={() => props.handleDraftPick(item)}
-              >
-                X
-              </Button> */}
             </Dropdown.Item>
           ))}
         </DropdownButton>
